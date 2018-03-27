@@ -1,0 +1,11 @@
+version: '2'
+services:
+  dokuwiki:
+    image: 'vincentravera/alien-4-cloud:latest'
+    ports:
+      - '8088:8088'
+    volumes:
+        - 'docker_socket:/var/run/docker.sock'
+volumes:
+  docker_socket:
+    driver: local
