@@ -22,21 +22,50 @@ RUN add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubunt
 RUN apt-get update
 RUN apt-get install -y docker-ce
 
+# Alien4cloud
+COPY start_alien4cloud.sh /root/
+
+ENV ALIEN4CLOUD_VERSION=1.4.3.1
+ENV FASTCONNECT_REPOSITORY=opensource
+ENV INSTALL=/root/alien4cloud-getstarted
+
+RUN mkdir -p $INSTALL
+
+RUN cd $INSTALL && curl -k -o "alien4cloud-dist-${ALIEN4CLOUD_VERSION}.tar.gz" -L "http://fastconnect.org/maven/service/local/artifact/maven/redirect?r=$FASTCONNECT_REPOSITORY&g=alien4cloud&a=alien4cloud-dist&v=${ALIEN4CLOUD_VERSION}&p=tar.gz&c=dist"
 
 
-# Install of vim
-RUN apt-get install -y vim
+RUN cd $INSTALL &&  curl -k -o "puccini-cli-${ALIEN4CLOUD_VERSION}.tgz" -L "http://fastconnect.org/maven/service/local/artifact/maven/redirect?r=$FASTCONNECT_REPOSITORY&g=org.alien4cloud.puccini&a=puccini-cli&v=${ALIEN4CLOUD_VERSION}&p=tgz"
 
-#COPY VIM_Docker_Builded.tgz /root/
-#
-#RUN tar -zxvf VIM_Docker_Builded.tgz
-#
-#RUN apt-get install -y zsh
-#
-#RUN env git clone --depth=1 https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
-#
-#COPY .zshrc /root
+RUN cd $INSTALL &&  curl -k -o "alien4cloud-puccini-plugin-${ALIEN4CLOUD_VERSION}.zip" -L "http://fastconnect.org/maven/service/local/artifact/maven/redirect?r=$FASTCONNECT_REPOSITORY&g=alien4cloud&a=alien4cloud-puccini-plugin&v=${ALIEN4CLOUD_VERSION}&p=zip"
+
+RUN cd $INSTALL ; tar zxvf alien4cloud-dist-${ALIEN4CLOUD_VERSION}.tar.gz
+
+RUN cd $INSTALL ; tar xvzf puccini-cli-${ALIEN4CLOUD_VERSION}.tgz
+
+ENV PUCCINI_DIR=puccini-cli-${ALIEN4CLOUD_VERSION}
+
+RUN cd $INSTALL ; mv alien4cloud-puccini-plugin-${ALIEN4CLOUD_VERSION}.zip alien4cloud/init/plugins/
+
+# RUN rm alien4cloud-dist-${ALIEN4CLOUD_VERSION}.tar.gz
+# RUN rm puccini-cli-${ALIEN4CLOUD_VERSION}.tgz
+
+
+RUN docker pull alien4cloud/puccini-deployer-base:1.0.0-alpine
+RUN docker pull alien4cloud/puccini-deployer:${ALIEN4CLOUD_VERSION}
+
+RUN docker pull alien4cloud/puccini-ubuntu-trusty
 
 EXPOSE 8088
 
-CMD curl -s https://raw.githubusercontent.com/alien4cloud/alien4cloud.github.io/sources/files/1.4.0/getting_started.sh | bash
+CMD sh start_alien4cloud.sh
+
+
+
+
+
+
+
+
+
+
+
