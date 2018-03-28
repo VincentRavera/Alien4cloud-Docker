@@ -54,7 +54,7 @@ VOLUME /var/run/docker.sock
 
 EXPOSE 8088
 
-CMD sh start_alien4cloud.sh
+CMD bash start_alien4cloud.sh
 
 
 
