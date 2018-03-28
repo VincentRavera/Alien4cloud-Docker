@@ -49,11 +49,8 @@ RUN cd $INSTALL ; mv alien4cloud-puccini-plugin-${ALIEN4CLOUD_VERSION}.zip alien
 # RUN rm alien4cloud-dist-${ALIEN4CLOUD_VERSION}.tar.gz
 # RUN rm puccini-cli-${ALIEN4CLOUD_VERSION}.tgz
 
-
-RUN docker pull alien4cloud/puccini-deployer-base:1.0.0-alpine
-RUN docker pull alien4cloud/puccini-deployer:${ALIEN4CLOUD_VERSION}
-
-RUN docker pull alien4cloud/puccini-ubuntu-trusty
+VOLUME /var/run/docker
+VOLUME /var/run/docker.sock
 
 EXPOSE 8088
 

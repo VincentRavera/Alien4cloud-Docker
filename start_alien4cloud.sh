@@ -7,6 +7,18 @@ ALIEN4CLOUD_VERSION=1.4.3.1
 FASTCONNECT_REPOSITORY=opensource
 INSTALL_DIR="/root/alien4cloud-getting_started/alien4cloud"
 
+echo "Import common docker images"
+COMMON_IMAGES=(alien4cloud/puccini-deployer-base:1.0.0-alpine alien4cloud/puccini-deployer:${ALIEN4CLOUD_VERSION} alien4cloud/puccini-ubuntu-trusty)
+for image in $COMMON_IMAGES
+do
+    TEST=$(docker image ls $image | wc -l)
+    if [ "$TEST" -lt 2 ]
+    then
+        echo "Pulling common image: $image"
+        docker pull $image
+    fi
+done
+
 echo "Starting alien4cloud"
 cd /root/alien4cloud-getting_started/alien4cloud
 ./alien4cloud.sh > /dev/null 2>&1 &
