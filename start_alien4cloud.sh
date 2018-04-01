@@ -127,7 +127,13 @@ do
     fi
 done
 
-postStart > /tmp/a4c_postStart &
+# Is already init ?
+if [ ! -f /tmp/a4c_postStart ]
+then
+    postStart > /tmp/a4c_postStart &
+fi
+
+
 echo "Starting alien4cloud"
 cd $INSTALL_DIR
 ./alien4cloud.sh 2>&1 | tee /tmp/a4c.log
