@@ -1,7 +1,7 @@
 version: '2'
 services:
   alien4cloud:
-    image: 'a4c'
+    image: 'vincentravera/alien4cloud-docker'
     ports:
       - '8088:8088'
     volumes:
