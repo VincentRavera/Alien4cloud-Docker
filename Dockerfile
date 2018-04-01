@@ -46,6 +46,8 @@ ENV PUCCINI_DIR=puccini-cli-${ALIEN4CLOUD_VERSION}
 
 RUN cd $INSTALL ; mv alien4cloud-puccini-plugin-${ALIEN4CLOUD_VERSION}.zip alien4cloud/init/plugins/
 
+COPY start_alien4cloud.sh /root/
+
 # RUN rm alien4cloud-dist-${ALIEN4CLOUD_VERSION}.tar.gz
 # RUN rm puccini-cli-${ALIEN4CLOUD_VERSION}.tgz
 
